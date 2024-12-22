@@ -16,18 +16,19 @@
 <script type="text/babel">
     const root = document.getElementById("root")
 
-    let counter = 0;
-    const countUp = () => {
-        counter = counter + 1
-        ReactDOM.render(<Container/>, root) // 이 부분을 호출하는 것을 잊는다면?
-    }
-    const Container = () => (
-        <div>
-            <h3>Total clicks : {counter}</h3>
-            <button onClick={countUp}>Click Me</button>
-        </div>
-    );
+    const App = () => {
+        const [counter, setCounter] = React.useState(0);
+        const onClick = () => {
+            // setCounter(counter + 1)
+            setCounter((current) => current + 1);
+        };
 
-    ReactDOM.render(<Container/>, root)
+        return (<div>
+            <h3>Total clicks : {counter}</h3>
+            <button onClick={onClick}>Click Me</button>
+        </div>);
+    };
+
+    ReactDOM.render(<App/>, root)
 </script>
 </html>
