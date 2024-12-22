@@ -15,21 +15,18 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
     const root = document.getElementById("root")
-    const Title = () => (
-        <h3 id="title" onMouseEnter={() => console.log(" mouse enter")}>
-            Hello I'm a title
-        </h3>
-    );
-    const Button = () => (
-        <button id="btn" onClick={() => console.log("i'm clicked")} style= {{backgroundColor: "tomato"}}>
-            "Click Me"
-        </button>
-    );
 
-    const Container = () => (<div>
-        <Title/>
-        <Button/>
-    </div>);
+    let counter = 0;
+    const countUp = () => {
+        counter = counter + 1
+        ReactDOM.render(<Container/>, root) // 이 부분을 호출하는 것을 잊는다면?
+    }
+    const Container = () => (
+        <div>
+            <h3>Total clicks : {counter}</h3>
+            <button onClick={countUp}>Click Me</button>
+        </div>
+    );
 
     ReactDOM.render(<Container/>, root)
 </script>
