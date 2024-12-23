@@ -14,21 +14,97 @@
 <!--브라우저가 JSX를 해석할 수 없으므로 추가해줘야함-->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    const root = document.getElementById("root")
+    const root = document.getElementById("root");
 
-    const App = () => {
-        const [counter, setCounter] = React.useState(0);
-        const onClick = () => {
-            // setCounter(counter + 1)
-            setCounter((current) => current + 1);
+    const MinutesToHours = () => {
+        const [minutes, setMinutes] = React.useState();
+        const [inverted, setInverted] = React.useState(false);
+        const [hours, setHours] = React.useState();
+
+        const onChangeMinutes = (event) => {
+            setMinutes(() => event.target.value);
+        };
+
+        const onChangeHours = (event) => {
+            setHours(() => event.target.value);
+        };
+
+        const useMinutesInput = inverted === false;
+        const useHoursInput = inverted === true;
+
+        const reset = () => {
+            if (useMinutesInput) {
+                setMinutes(() => 0);
+            } else {
+                setHours(() => 0);
+            }
+        };
+
+        const onFlip = () => {
+            setInverted(current => !current);
         };
 
         return (<div>
-            <h3>Total clicks : {counter}</h3>
-            <button onClick={onClick}>Click Me</button>
+            <h3>Minutes to Hours</h3>
+            <label htmlFor="minutes">Minutes
+                <input value={useMinutesInput ? minutes : hours * 60}
+                       id="minutes"
+                       placeholder="Minutes"
+                       type="number"
+                       onChange={onChangeMinutes}
+                       disabled={useHoursInput}
+                />
+            </label>
+
+            <label htmlFor="hours">Hours
+                <input
+                    value={useHoursInput ? hours : minutes / 60}
+                    id="hours"
+                    placeholder="Hours"
+                    type="number"
+                    onChange={onChangeHours}
+                    disabled={useMinutesInput}
+                />
+            </label>
+            <button onClick={reset}>Reset</button>
+            <button onClick={onFlip}>Flip</button>
         </div>);
     };
 
-    ReactDOM.render(<App/>, root)
+    function KMtoMiles() {
+        return (
+            <h3>KM 2 Miles</h3>
+
+        );
+    }
+
+    const ConverterType = {
+        NONE: "None",
+        MINUTES_TO_HOURS: "Minutes & Hours",
+        KM_TO_MILES: "KM & Miles"
+    };
+    Object.freeze(ConverterType);
+
+    const App = () => {
+
+        const [converterType, setConverterType] = React.useState(ConverterType.NONE)
+        const onSelect = (event) => {
+            setConverterType(event.target.value)
+        }
+
+        return (<div>
+            <h1>Super Converter</h1>
+            <select value={converterType} onChange={onSelect}>
+                <option value={ConverterType.NONE}>Select Convert Type</option>
+                <option value={ConverterType.MINUTES_TO_HOURS}>Minutes & Hours</option>
+                <option value={ConverterType.KM_TO_MILES}>KM & Miles</option>
+            </select>
+            <hr/>
+            {converterType === ConverterType.MINUTES_TO_HOURS ? <MinutesToHours/> : null}
+            {converterType === ConverterType.KM_TO_MILES ? <KMtoMiles/> : null}
+        </div>);
+    };
+
+    ReactDOM.render(<App/>, root);
 </script>
 </html>
