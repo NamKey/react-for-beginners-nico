@@ -84,24 +84,26 @@
         KM_TO_MILES: "KM & Miles"
     };
     Object.freeze(ConverterType);
+    const Btn = ({text, changeValue}) => {
+        console.log(text, "was render")
+        return <button
+            onClick={changeValue}
+            style={{
+                backgroundColor: "tomato",
+                color: "white",
+                padding: "10px 20px",
+                border: 0,
+                borderRadius: 10,
+            }}>{text}</button>;
+    };
 
+    const MemorizedButton = React.memo(Btn)
     const App = () => {
-
-        const [converterType, setConverterType] = React.useState(ConverterType.NONE)
-        const onSelect = (event) => {
-            setConverterType(event.target.value)
-        }
-
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Changes");
         return (<div>
-            <h1>Super Converter</h1>
-            <select value={converterType} onChange={onSelect}>
-                <option value={ConverterType.NONE}>Select Convert Type</option>
-                <option value={ConverterType.MINUTES_TO_HOURS}>Minutes & Hours</option>
-                <option value={ConverterType.KM_TO_MILES}>KM & Miles</option>
-            </select>
-            <hr/>
-            {converterType === ConverterType.MINUTES_TO_HOURS ? <MinutesToHours/> : null}
-            {converterType === ConverterType.KM_TO_MILES ? <KMtoMiles/> : null}
+            <MemorizedButton text={value} changeValue={changeValue}/>
+            <MemorizedButton text="Continue"/>
         </div>);
     };
 
